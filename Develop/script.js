@@ -1,45 +1,81 @@
-// when button is clicked window alerts will ask the user the following:
+(function () {
+  // when button is clicked window alerts will ask the user the following:
 
-//declaring all letters and numbers available
-const chars = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 !"#$%&'()*+,-./:;<=>?@[\u005C]^_\u0060{|}~`;
+  // declaring all letters and numbers available
+  const upperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const lowerCase = 'abcdefghijklmnopqrstuvwxyz';
+  const numbers = '0123456789';
+  const specialChar = ` !"#$%&'()*+,-./:;<=>?@[\u005C]^_\u0060{|}~`;
 
-// collect string length
-const stringLength = prompt(
-  'How long do you want your password to be? (8-128 chars)'
-);
+  function alertPrompts() {
+    //  collect string length
+    const stringLength = prompt(
+      'How long do you want your password to be? (8-128 chars)'
+    );
+    //do you want lower case?
+    const confirmLowerCase = window.confirm(
+      'Would you like lower case letters in your password?'
+    );
+    // do you want uppercase?
+    const confirmUpperCase = window.confirm(
+      'Would you like upper case letters in your password?'
+    );
+    // do you want numbers in your password?
+    const confirmNumber = window.confirm(
+      'Would you like numbers in your password?'
+    );
+    // do you want special characters in your password?
+    const confirmSpecialChar = window.confirm(
+      'Would you like special characters in your password?'
+    );
 
-// do you want lower case?
-const confirmLowerCase = window.confirm(
-  'Would you like lower case letters in your password?'
-);
+    return {
+      stringLength,
+      confirmLowerCase,
+      confirmUpperCase,
+      confirmNumber,
+      confirmSpecialChar,
+    };
+  }
 
-// do you want uppercase?
-const confirmUpperCase = window.confirm(
-  'Would you like upper case letters in your password?'
-);
+  function generatePassword(answers) {
+    let charPool = '';
+    let localPassword = '';
 
-// do you want numbers in your password?
-const confirmNumber = window.confirm(
-  'Would you like numbers in your password?'
-);
+    if (answers.confirmLowerCase) {
+      charPool += lowerCase;
+    }
+    if (answers.confirmUpperCase) {
+      charPool += upperCase;
+    }
+    if (answers.confirmNumber) {
+      charPool += numbers;
+    }
+    if (answers.confirmSpecialChar) {
+      charPool += specialChar;
+    }
 
-// do you want special characters in your password?
-const confirmSpecialChar = window.confirm(
-  'Would you like special characters in your password?'
-);
+    for (let i = 0; i < answers.stringLength; i++) {
+      localPassword += charPool.charAt(
+        Math.floor(Math.random() * charPool.length)
+      );
+    }
 
-// writing if statement to confirm or deny chocies on password specificity
+    return localPassword;
+  }
 
-// // Get references to the #generate element
-// let generateBtn = document.querySelector('#generate');
+  // Write password to the #password input
+  function writePassword() {
+    const answers = alertPrompts();
+    let password = generatePassword(answers);
+    let passwordText = document.querySelector('#password');
 
-// // Write password to the #password input
-// function writePassword() {
-//   let password = generatePassword();
-//   let passwordText = document.querySelector('#password');
+    passwordText.value = password;
+  }
 
-//   passwordText.value = password;
-// }
+  // Get references to the #generate element
+  let generateBtn = document.querySelector('#generate');
 
-// // Add event listener to generate button
-// generateBtn.addEventListener('click', writePassword);
+  // // Add event listener to generate button
+  generateBtn.addEventListener('click', writePassword);
+})();
