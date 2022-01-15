@@ -3,6 +3,8 @@ const upperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const lowerCase = 'abcdefghijklmnopqrstuvwxyz';
 const numbers = '0123456789';
 const specialChar = ` !"#$%&'()*+,-./:;<=>?@[\u005C]^_\u0060{|}~`;
+// Get references to the #generate element
+const generateBtn = document.querySelector('#generate');
 
 // function to gather length and true/false answers
 function alertPrompts() {
@@ -10,6 +12,11 @@ function alertPrompts() {
   const stringLength = prompt(
     'How long do you want your password to be? (8-128 chars)'
   );
+  // restricting to 8-128 values
+  if (stringLength < 8 || stringLength > 128) {
+    alert('You must choose a value between 8-128.');
+    alertPrompts();
+  }
   //do you want lower case?
   const confirmLowerCase = window.confirm(
     'Would you like lower case letters in your password?'
@@ -70,9 +77,6 @@ function writePassword() {
 
   passwordText.value = password;
 }
-
-// Get references to the #generate element
-const generateBtn = document.querySelector('#generate');
 
 // // Add event listener to generate button
 generateBtn.addEventListener('click', writePassword);
